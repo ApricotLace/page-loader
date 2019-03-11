@@ -15,6 +15,12 @@ export default
     const readyPath = constructPath(downloadPath, response.config.url);
     return fs.writeFile(readyPath, response.data)
       .then(() => readyPath)
-      .catch(err => console.log(`${err}`));
+      .catch((err) => {
+        console.log(`${err}`);
+        throw err;
+      });
   })
-  .catch(err => console.log(`${err}`));
+  .catch((err) => {
+    console.log(`${err}`);
+    throw err;
+  });
