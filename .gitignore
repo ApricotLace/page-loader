@@ -1,0 +1,7 @@
+/node_modules/
+*.log
+dist
+.tern-port
+.idea
+.parrabelum
+.DS_Store
