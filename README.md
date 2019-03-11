@@ -21,3 +21,5 @@ Options:
   -o, --output [path]  specify download path
   -h, --help           output usage information
 ```
+
+[![asciicast](https://asciinema.org/a/cqNYxo00AbyvgFGlcH4IF6cng.svg)](https://asciinema.org/a/cqNYxo00AbyvgFGlcH4IF6cng)
