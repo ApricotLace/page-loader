@@ -10,7 +10,6 @@ program
   .option('-o, --output [path]', 'specify download path')
   .arguments('<downloadedResourcePath>')
   .action((downloadedResourcePath, options) => {
-    console.log(options.output ? options.output : 'flag -o not passed');
-    pageloader(options.output, downloadedResourcePath);
+    pageloader(options.output ? options.output : process.cwd(), downloadedResourcePath);
   })
   .parse(process.argv);
