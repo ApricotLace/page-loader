@@ -2,6 +2,7 @@
 
 import program from 'commander';
 import { version } from '../../package.json';
+import pageloader from '..';
 
 program
   .version(version)
@@ -10,6 +11,6 @@ program
   .arguments('<downloadedResourcePath>')
   .action((downloadedResourcePath, options) => {
     console.log(options.output ? options.output : 'flag -o not passed');
-    console.log(downloadedResourcePath);
+    pageloader(options.output, downloadedResourcePath);
   })
   .parse(process.argv);

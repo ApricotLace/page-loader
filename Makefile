@@ -1,7 +1,7 @@
 nstall: install-deps
 
 run:
-	npx babel-node -- 'src/bin/pageloader.js' 10
+	npx babel-node -- 'src/index.js' 10
 
 install-deps:
 	npm install
