@@ -5,3 +5,4 @@ dist
 .idea
 .parrabelum
 .DS_Store
+tmp.js
