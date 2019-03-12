@@ -1,7 +1,7 @@
 nstall: install-deps
 
 run:
-	npx babel-node -- 'src/testik.js' 10
+	npx babel-node -- 'src/tmp.js' 10
 
 install-deps:
 	npm install
