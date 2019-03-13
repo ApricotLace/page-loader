@@ -32,25 +32,33 @@ describe('download test', () => {
   });
 
   it('#succ local download', async () => {
-    const link = 'https://vk.com/id337030052';
+    const link = 'http://localhost';
 
-    nock('http://localhost')
+    nock(link)
       .get('/')
-      .replyWithFile(200, `${__dirname}/__fixtures__/originalHtml.html`);
+      .replyWithFile(200, `${__dirname}/__fixtures__/originalHtmlTest2.html`);
+
+    nock(link)
+      .get('/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js')
+      .replyWithFile(200, `${__dirname}/__fixtures__/testLocalRes`);
 
     const tmpFilePath = await fs.mkdtemp(path.join(os.tmpdir(), 'tests'));
     const pathToWrittenFile = await download(tmpFilePath, link);
     const pathToResDir = await downloadLocalRes(pathToWrittenFile, link);
     const dirContent = await fs.readdir(pathToResDir);
-    expect(dirContent.length).toBe(4);
+    expect(dirContent.length).toBe(1);
   });
 
   it('#succ html update', async () => {
-    const link = 'https://ru.hexlet.io/courses';
+    const link = 'http://localhost';
 
-    nock('http://localhost')
+    nock(link)
       .get('/')
       .replyWithFile(200, `${__dirname}/__fixtures__/originalHtmlTest2.html`);
+
+    nock(link)
+      .get('/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js')
+      .replyWithFile(200, `${__dirname}/__fixtures__/testLocalRes`);
 
     const tmpFilePath = await fs.mkdtemp(path.join(os.tmpdir(), 'testss'));
     const pathToWrittenFile = await download(tmpFilePath, link);
