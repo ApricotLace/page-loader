@@ -1,4 +1,6 @@
-import downloadPage from './downloadPage';
+import { download } from './pageDownload';
+import downloadLocalRes from './localResoursesDownload';
 
 export default
-(downloadPath, downloadResoursePath) => downloadPage(downloadPath, downloadResoursePath);
+(downloadPath, sourceLink) => download(downloadPath, sourceLink)
+  .then(pathToPage => downloadLocalRes(pathToPage, sourceLink));
