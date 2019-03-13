@@ -4,7 +4,7 @@ import nock from 'nock';
 import { promises as fs } from 'fs';
 import path from 'path';
 import os from 'os';
-import { download, loadPage } from '../src';
+import { loadPage } from '../src';
 
 axios.defaults.adapter = httpAdapter;
 const getPathToFixture = fixtureName => `${__dirname}/__fixtures__/${fixtureName}`;
@@ -26,9 +26,9 @@ describe('download test', () => {
       .reply(200, 'some html code goes here\nalso a lot of tags');
 
     const tmpFilePath = await fs.mkdtemp(path.join(os.tmpdir(), 'fancytest'));
-    const pathToWrittenFile = await download(tmpFilePath, host);
-    const writtenFile = await fs.readFile(pathToWrittenFile);
-    expect(writtenFile.toString()).toBe('some html code goes here\nalso a lot of tags');
+    const pathToWrittenFile = await loadPage(tmpFilePath, host);
+    const writtenFile = await fs.readFile(pathToWrittenFile[0]);
+    expect(writtenFile.toString()).toBe('<html><head></head><body>some html code goes here\nalso a lot of tags</body></html>');
   });
 });
 
