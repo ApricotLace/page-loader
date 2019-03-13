@@ -4,8 +4,7 @@ import nock from 'nock';
 import { promises as fs } from 'fs';
 import path from 'path';
 import os from 'os';
-import { download } from '../src/pageDownload';
-import load from '../src';
+import { download, loadPage } from '../src';
 
 axios.defaults.adapter = httpAdapter;
 const getPathToFixture = fixtureName => `${__dirname}/__fixtures__/${fixtureName}`;
@@ -50,14 +49,14 @@ describe('write&update test', () => {
   });
   it('#succ local download', async () => {
     const pathToTmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'hash'));
-    const pathToResDir = await load(pathToTmpDir, link);
+    const pathToResDir = await loadPage(pathToTmpDir, link);
     const dirContent = await fs.readdir(pathToResDir[1]);
     expect(dirContent.length).toBe(2);
   });
 
   it('#succ html update', async () => {
     const pathToTmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'hash'));
-    await load(pathToTmpDir, link);
+    await loadPage(pathToTmpDir, link);
     const fixture = await fs.readFile(getPathToFixture('originalHtmlTest2.html'));
     const dirContent = await fs.readdir(pathToTmpDir);
     const writtenFile = await fs.readFile(`${pathToTmpDir}/${dirContent[0]}`);

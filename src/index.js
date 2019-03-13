@@ -89,11 +89,11 @@ const downloadLocalRes = (pathToPage, sourceLink, pathToResDir) => fs.promises.m
   .then(data => updateHtml(data.toString(), sourceLink, pathToPage))
   .then(links => downloadResourses(links, pathToResDir));
 
-const download = (downloadPath, downloadedResoursePath, readyPath) => axios.get(downloadedResoursePath)
+export const download = (downloadPath, downloadedResoursePath, readyPath) => axios.get(downloadedResoursePath)
   .then(response => fs.promises.writeFile(readyPath, response.data))
   .then(() => debugLog(`Page was downloaded to ${readyPath}`));
 
-export default (downloadPath, sourceLink) => {
+export const loadPage = (downloadPath, sourceLink) => {
   const readyPath = constructPath(downloadPath, sourceLink);
   const pathToResDir = `${readyPath.slice(0, readyPath.indexOf('.html'))}_files`;
 
