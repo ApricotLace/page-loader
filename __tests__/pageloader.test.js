@@ -5,9 +5,10 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import os from 'os';
 import { download } from '../src/pageDownload';
-import downloadLocalRes from '../src/localResoursesDownload';
+import load from '../src';
 
 axios.defaults.adapter = httpAdapter;
+const getPathToFixture = fixtureName => `${__dirname}/__fixtures__/${fixtureName}`;
 
 describe('download test', () => {
   it('#succ 200', async () => {
@@ -30,42 +31,36 @@ describe('download test', () => {
     const writtenFile = await fs.readFile(pathToWrittenFile);
     expect(writtenFile.toString()).toBe('some html code goes here\nalso a lot of tags');
   });
+});
 
-  it('#succ local download', async () => {
-    const link = 'http://localhost';
-
+describe('write&update test', () => {
+  const link = 'http://localhost';
+  beforeEach(() => {
     nock(link)
       .get('/')
-      .replyWithFile(200, `${__dirname}/__fixtures__/originalHtmlTest2.html`);
+      .replyWithFile(200, getPathToFixture('originalHtmlTest2.html'));
 
     nock(link)
       .get('/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js')
-      .replyWithFile(200, `${__dirname}/__fixtures__/testLocalRes`);
+      .replyWithFile(200, getPathToFixture('testLocalRes'));
 
-    const tmpFilePath = await fs.mkdtemp(path.join(os.tmpdir(), 'tests'));
-    const pathToWrittenFile = await download(tmpFilePath, link);
-    const pathToResDir = await downloadLocalRes(pathToWrittenFile, link);
-    const dirContent = await fs.readdir(pathToResDir);
-    expect(dirContent.length).toBe(1);
+    nock(link)
+      .get('/courses')
+      .replyWithFile(200, getPathToFixture('originalHtmlTest2.html'));
+  });
+  it('#succ local download', async () => {
+    const pathToTmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'hash'));
+    const pathToResDir = await load(pathToTmpDir, link);
+    const dirContent = await fs.readdir(pathToResDir[1]);
+    expect(dirContent.length).toBe(2);
   });
 
   it('#succ html update', async () => {
-    const link = 'http://localhost';
-
-    nock(link)
-      .get('/')
-      .replyWithFile(200, `${__dirname}/__fixtures__/originalHtmlTest2.html`);
-
-    nock(link)
-      .get('/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js')
-      .replyWithFile(200, `${__dirname}/__fixtures__/testLocalRes`);
-
-    const tmpFilePath = await fs.mkdtemp(path.join(os.tmpdir(), 'testss'));
-    const pathToWrittenFile = await download(tmpFilePath, link);
-    await downloadLocalRes(pathToWrittenFile, link);
-    const fixture = await fs.readFile(`${__dirname}/__fixtures__/originalHtmlTest2.html`);
-    const writtenFile = await fs.readFile(pathToWrittenFile);
-    console.log(tmpFilePath);
+    const pathToTmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'hash'));
+    await load(pathToTmpDir, link);
+    const fixture = await fs.readFile(getPathToFixture('originalHtmlTest2.html'));
+    const dirContent = await fs.readdir(pathToTmpDir);
+    const writtenFile = await fs.readFile(`${pathToTmpDir}/${dirContent[0]}`);
     expect(writtenFile.toString()).not.toBe(fixture.toString());
   });
 });

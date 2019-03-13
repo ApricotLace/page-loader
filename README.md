@@ -22,4 +22,8 @@ Options:
   -h, --help           output usage information
 ```
 
+## Asciinema
 [![asciicast](https://asciinema.org/a/cqNYxo00AbyvgFGlcH4IF6cng.svg)](https://asciinema.org/a/cqNYxo00AbyvgFGlcH4IF6cng)
+
+## Usage with debug
+https://asciinema.org/a/EqyVQ9xKzP6M9yQnQsAfnZLwT
