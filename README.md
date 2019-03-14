@@ -22,7 +22,7 @@ Options:
 ```
 
 ## Asciinema
-[![asciicast](https://asciinema.org/a/w5KdhzaZTmc84uECcErrJdMFk.svg)](https://asciinema.org/a/w5KdhzaZTmc84uECcErrJdMFk)
+[![asciicast](https://asciinema.org/a/Xg62YNmhovdJ9hi12pn7ThIIQ.svg)](https://asciinema.org/a/Xg62YNmhovdJ9hi12pn7ThIIQ)
 
 ## Usage with debug
 [![asciicast](https://asciinema.org/a/EqyVQ9xKzP6M9yQnQsAfnZLwT.svg)](https://asciinema.org/a/EqyVQ9xKzP6M9yQnQsAfnZLwT)
