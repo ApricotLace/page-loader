@@ -90,8 +90,8 @@ describe('writeToExistingFile fail', () => {
   const link = 'http://local';
   const pathToTmpFile = path.join(os.tmpdir(), `${constructPath('', link, 0)}`);
   console.log(pathToTmpFile);
-  beforeAll(async () => { await fs.writeFile(pathToTmpFile, ''); });
-  afterAll(async () => { await fs.unlink(pathToTmpFile); });
+  beforeEach(() => fs.writeFile(pathToTmpFile, ''));
+  afterEach(() => fs.unlink(pathToTmpFile));
   nock(link)
     .get('/')
     .replyWithFile(200, getPathToFixture('testHtml.html'));
