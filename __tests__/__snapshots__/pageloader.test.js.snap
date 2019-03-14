@@ -3,5 +3,3 @@
 exports[`localResDownload fail #fails 1`] = `"Request failed with status code 404"`;
 
 exports[`rawPageDownload fail #fails 1`] = `"Request failed with status code 404"`;
-
-exports[`writeToExistingFile fail #fails 1`] = `"EEXIST: file already exists, mkdir '/var/folders/pj/mzglf7_s7_777cxfyb72ls2h0000gn/T/local_files'"`;
