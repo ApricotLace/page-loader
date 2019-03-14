@@ -14,7 +14,6 @@ program
   .action(downloadedResourcePath => loadPage(program.output, downloadedResourcePath)
     .then(paths => console
       .log(chalk.green(`Page successfully downloaded to ${paths[0]}\nLocal resourses successfully downloaded to ${paths[1]}`)))
-    .then(() => process.exit(0))
     .catch((err) => {
       console.error(chalk.red(`${err.code}: ${err.message}`));
       process.exit(1);
