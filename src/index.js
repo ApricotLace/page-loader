@@ -4,6 +4,7 @@ import path from 'path';
 import url from 'url';
 import axios from 'axios';
 import debug from 'debug';
+import Listr from 'listr';
 
 const debugLog = debug('pageloader');
 
@@ -23,7 +24,7 @@ const checkTag = (tag) => {
   return !url.parse(attr).host;
 };
 
-const constructPath = (originalPath, sourceUrl, isForResFolder = 0) => {
+export const constructPath = (originalPath, sourceUrl, isForResFolder = 0) => {
   const parsedUrl = new URL(sourceUrl);
   const rawNname = parsedUrl.href.slice(`${parsedUrl.protocol}//`.length);
   const cebabNotation = `${rawNname.match(/\w+/g).join('-')}`;
@@ -68,20 +69,25 @@ const updateHtml = (html, sourceLink, pathToPage) => {
     .then(() => pathsToResourses);
 };
 
-const downloadResourses = (links, pathToResDir) => {
-  const getPathName = (response) => {
-    const parsedUrl = new URL(response.config.url);
-    return parsedUrl.pathname;
-  };
+const getPathame = (response) => {
+  const parsedUrl = new URL(response.config.url);
+  return parsedUrl.pathname;
+};
 
-  const writeLocalRes = link => axios.get(link, { responseType: 'arraybuffer' })
-    .then((response) => {
-      debugLog(`Resourse ${link} was donwloaded`);
-      return fs.promises.writeFile(`${pathToResDir}/${constructFileName(getPathName(response))}`, response.data);
-    })
-    .then(() => debugLog(`Resourse ${link} is written on disk`));
-  const promises = links.map(link => writeLocalRes(link));
-  return Promise.all(promises);
+export const writeLocalRes = (link, pathToResDir) => axios.get(link, { responseType: 'arraybuffer' })
+  .then((response) => {
+    debugLog(`Resourse ${link} was donwloaded`);
+    return fs.promises.writeFile(`${pathToResDir}/${constructFileName(getPathame(response))}`, response.data);
+  }).then(() => debugLog(`Resourse ${link} is written on disk`));
+
+
+const downloadResourses = (links, pathToResDir) => {
+  const taskObjects = links.map(link => ({
+    title: `${link}`,
+    task: () => writeLocalRes(link, pathToResDir).catch((err) => { throw err; }),
+  }));
+  const tasks = new Listr(taskObjects, { concurrent: true, exitOnError: false });
+  return tasks.run();
 };
 
 const downloadLocalRes = (pathToPage, sourceLink, pathToResDir) => fs.promises.mkdir(pathToResDir)
@@ -89,7 +95,7 @@ const downloadLocalRes = (pathToPage, sourceLink, pathToResDir) => fs.promises.m
   .then(data => updateHtml(data.toString(), sourceLink, pathToPage))
   .then(links => downloadResourses(links, pathToResDir));
 
-export const download = (downloadPath, downloadedResoursePath, readyPath) => axios.get(downloadedResoursePath)
+const downloadRawPage = (downloadPath, downloadedResoursePath, readyPath) => axios.get(downloadedResoursePath)
   .then(response => fs.promises.writeFile(readyPath, response.data))
   .then(() => debugLog(`Page was downloaded to ${readyPath}`));
 
@@ -97,7 +103,7 @@ export const loadPage = (downloadPath, sourceLink) => {
   const readyPath = constructPath(downloadPath, sourceLink);
   const pathToResDir = `${readyPath.slice(0, readyPath.indexOf('.html'))}_files`;
 
-  return download(downloadPath, sourceLink, readyPath)
+  return downloadRawPage(downloadPath, sourceLink, readyPath)
     .then(() => downloadLocalRes(readyPath, sourceLink, pathToResDir))
     .then(() => {
       debugLog('Page updated and written on disk');

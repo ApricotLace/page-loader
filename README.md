@@ -4,8 +4,7 @@
 
 **CLI Application**
 
-//TODO some tasty description here
-
+Saves **the page and local resources** almost like a browser<Paste>
 ## Installation:
 >`npm install -g apricotlace-page-loader`
 
@@ -23,7 +22,7 @@ Options:
 ```
 
 ## Asciinema
-[![asciicast](https://asciinema.org/a/cqNYxo00AbyvgFGlcH4IF6cng.svg)](https://asciinema.org/a/cqNYxo00AbyvgFGlcH4IF6cng)
+[![asciicast](https://asciinema.org/a/w5KdhzaZTmc84uECcErrJdMFk.svg)](https://asciinema.org/a/w5KdhzaZTmc84uECcErrJdMFk)
 
 ## Usage with debug
 [![asciicast](https://asciinema.org/a/EqyVQ9xKzP6M9yQnQsAfnZLwT.svg)](https://asciinema.org/a/EqyVQ9xKzP6M9yQnQsAfnZLwT)

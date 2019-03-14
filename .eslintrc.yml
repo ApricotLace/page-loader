@@ -21,4 +21,4 @@ extends:
 
 rules:
   no-console: 0
-  max-len: 0
+  max-len: [2, 135, 4, {"ignoreUrls": true}]
