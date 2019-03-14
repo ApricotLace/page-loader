@@ -86,7 +86,7 @@ describe('localResDownload fail', () => {
   });
 });
 
-describe('writeToExistingFile fail', () => {
+describe('writeToExistingDir fail', () => {
   const link = 'http://local';
   const pathToTmpFile = path.join(os.tmpdir(), `${constructPath('', link, 1)}`);
   console.log(pathToTmpFile);
