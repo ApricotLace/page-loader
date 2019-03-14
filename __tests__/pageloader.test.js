@@ -88,10 +88,11 @@ describe('localResDownload fail', () => {
 
 describe('writeToExistingFile fail', () => {
   const link = 'http://local';
-  const pathToTmpFile = path.join(os.tmpdir(), `${constructPath('', link, 0)}`);
+  const pathToTmpFile = path.join(os.tmpdir(), `${constructPath('', link, 1)}`);
   console.log(pathToTmpFile);
-  beforeEach(() => fs.writeFile(pathToTmpFile, ''));
-  afterEach(() => fs.unlink(pathToTmpFile));
+  console.log(os.tmpdir());
+  beforeEach(() => fs.mkdir(pathToTmpFile));
+  afterEach(() => fs.rmdir(pathToTmpFile));
   nock(link)
     .get('/')
     .replyWithFile(200, getPathToFixture('testHtml.html'));
